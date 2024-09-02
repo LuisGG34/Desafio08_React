@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AlertComponent from './AlertComponent'; // Importa el componente AlertComponent
+import AlertComponent from '../components/AlertComponent'; // Importa el componente AlertComponent
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
