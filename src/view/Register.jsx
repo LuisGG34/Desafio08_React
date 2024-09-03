@@ -33,7 +33,7 @@ const Register = () => {
     return (
         <>
             {alertProps && <AlertComponent {...alertProps} />} {/* Renderiza la alerta si alertProps está definido */}
-            <form onSubmit={validateForm}>
+            <form onSubmit={validateForm} className="highlighted-text">
                 <h3>Formulario de Registro</h3>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Dirección de correo electrónico</label>

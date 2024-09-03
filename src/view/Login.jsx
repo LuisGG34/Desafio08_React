@@ -29,7 +29,7 @@ const Login = () => {
     return (
         <>
             {alertProps && <AlertComponent {...alertProps} />} {/* Renderiza la alerta si alertProps está definido */}
-            <form>
+            <form className="highlighted-text">
                 <h3>Login</h3>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Dirección de correo electrónico</label>

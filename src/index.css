@@ -71,17 +71,20 @@ header{
   width: 100%;
 }
 
-.fondoHeader{
-    background-image: url('./assets/img/pizza2.jpg');
-    background-size: cover; /* Ajusta la imagen para que cubra todo el header */
-    background-position: center; /* Centra la imagen en el header */
-    background-color: rgba(0, 0, 0, 0.5); /* Color de fondo translúcido */
-    color: white; /* Color del texto */
-    text-align: center; /* Centra el texto horizontalmente */
-    padding: 50px 0; /* Espaciado dentro del header */
-    position: relative; /* Para el overlay */
-    opacity: 0.9; /* Ajusta la opacidad de la imagen para hacerla translúcida */
+.fondoHeader {
+  background-image: url('./assets/img/pizzaluis.jpg');
+  background-size: cover; /* Ajusta la imagen para que cubra todo el header */
+  background-position: center; /* Centra la imagen en el header */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-color: rgba(0, 0, 0, 0.5); /* Color de fondo translúcido */
+  color: whitesmoke; /* Color del texto */
+  font-weight: bold;
+  text-align: center; /* Centra el texto horizontalmente */
+  padding: 50px 0; /* Espaciado dentro del header */
+  position: relative; /* Para el overlay */
+  opacity: 1; /* Ajusta la opacidad de la imagen para hacerla translúcida */
 }
+
 
 .fondoHeader h1 {
     margin: 0;
@@ -108,3 +111,71 @@ header{
   font-size: 20px;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('./assets/img/pizzaiconos1.jpg'); /* Ruta de tu imagen de pizza */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-size: cover; /* Hace que la imagen cubra todo el body */
+  background-position: center; /* Centra la imagen */
+  background-attachment: fixed; /* La imagen se mantiene fija al hacer scroll */
+  background-color: #f5f5f5; /* Color de fondo de la página */
+  min-height: 100vh; /* Asegura que el body ocupe al menos el 100% de la altura visible */
+  min-width: 100vw; /* Asegura que el body ocupe al menos el 100% del ancho visible */
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.perfil-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.perfil-foto {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.perfil-container h2 {
+  margin-bottom: 10px;
+}
+
+.perfil-container p {
+  margin: 5px 0;
+}
+
+.perfil-container button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.perfil-container button:hover {
+  background-color: #0056b3;
+}
+
+.highlighted-text {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+}

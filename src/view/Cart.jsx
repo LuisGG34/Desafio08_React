@@ -81,8 +81,8 @@ const Cart = () => {
             {carrito.length > 0 && (
 
             <>
-                <h3>Productos en tu carrito:</h3>
-                <h4>Total: ${totalCarrito.toFixed(2)}</h4> {/* Mostrar el total formateado */}
+                <h3 className="highlighted-text">Productos en tu carrito:</h3>
+                <h4 className="highlighted-text">Total: ${totalCarrito.toFixed(2)}</h4> {/* Mostrar el total formateado */}
                 <button className="btn btn-primary">Pagar</button> {/* Botón Pagar */}
             </>
             )}
@@ -115,7 +115,7 @@ const Cart = () => {
                 </div>
             </div>
             
-            <h3>¡Escoge tu pizza preferida!</h3>
+            <h3 className="highlighted-text">¡Escoge tu pizza preferida!</h3>
             <div className="row">
                 {/* Mapeo de la lista principal de pizzas */}
                 {listaPizzas.map((pizza, index) => (
