@@ -8,9 +8,13 @@ import Pizza from "./view/Pizza";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Profile from "./view/Profile";
 import NotFound from "./view/NotFound";
+import { CarritoProvider } from "./context/CarritoContext";
+import { PizzaProvider } from "./context/PizzaContext";
 
 const App = () => {
 return (
+    <PizzaProvider>
+    <CarritoProvider>
     <Router>
         <Navbar />
         <Routes>
@@ -25,6 +29,8 @@ return (
         </Routes>
         <Footer />
     </Router>
+    </CarritoProvider>
+    </PizzaProvider>
 );
 };
 

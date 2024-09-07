@@ -1,10 +1,14 @@
-import React from 'react';
+import React,{ useContext} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faCartShopping, faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PropTypes from 'prop-types';  // Asegúrate de importar PropTypes
+import { CarritoContext } from '../context/CarritoContext';
 
-const CardPizza = ({ pizza: { name, price, img, ingredients,id },agregarAlCarrito}) => {
+const CardPizza = ({ pizza: { name, price, img, ingredients,id }}) => {
+
+    const {agregarAlCarrito} = useContext(CarritoContext);
+
     return (
         <>
         <div className="card" style={{ width: "18rem" }}>
