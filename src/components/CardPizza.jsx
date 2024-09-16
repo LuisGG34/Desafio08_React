@@ -1,4 +1,5 @@
 import React,{ useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faCartShopping, faPizzaSlice } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,6 +9,11 @@ import { CarritoContext } from '../context/CarritoContext';
 const CardPizza = ({ pizza: { name, price, img, ingredients,id }}) => {
 
     const {agregarAlCarrito} = useContext(CarritoContext);
+    const navigate = useNavigate();
+
+    const verDetallePizza = (id) => {
+        navigate(`/pizza/${id}`);
+    };
 
     return (
         <>
@@ -26,7 +32,7 @@ const CardPizza = ({ pizza: { name, price, img, ingredients,id }}) => {
                 <li className="list-group-item fs-4">Precio: ${price}</li>
             </ul>
             <div className='d-grid gap-3 justify-content-around d-flex'>
-                <button className="btn btn-secondary">
+                <button className="btn btn-secondary" onClick={() => verDetallePizza(id)}>
                     <FontAwesomeIcon icon={faEye} />
                     Ver Mas
                 </button>

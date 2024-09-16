@@ -6,7 +6,7 @@ import { PizzaContext } from '../context/PizzaContext';
 
 const Home = () => {
     
-    const {listaPizzas,setListaPizzas, loading, setLoading, error,setError} = useContext(PizzaContext )
+    const {listaPizzas} = useContext(PizzaContext )
     
     return (
         <>

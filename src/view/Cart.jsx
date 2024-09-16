@@ -1,26 +1,26 @@
-// comando para crear un componente rapido rafce
-
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { CarritoContext } from '../context/CarritoContext';
+import { UserContext } from '../context/UserContext';
 
 const Cart = () => {
-    
-    const {listaPizzas,carrito,totalCarrito,aumentarCantidad, disminuirCantidad, agregarAlCarrito} = useContext(CarritoContext)
+    const { listaPizzas, carrito, totalCarrito, aumentarCantidad, disminuirCantidad, agregarAlCarrito } = useContext(CarritoContext);
+    const { token } = useContext(UserContext);
 
     return (
-        <>  
+        <>
             {/* Mostrar el título solo si el carrito tiene elementos */}
             {carrito.length > 0 && (
+                <>
+                    <h3 className="highlighted-text">Productos en tu carrito:</h3>
+                    <h4 className="highlighted-text">Total: ${totalCarrito.toFixed(2)}</h4> {/* Mostrar el total formateado */}
 
-            <>
-                <h3 className="highlighted-text">Productos en tu carrito:</h3>
-                <h4 className="highlighted-text">Total: ${totalCarrito.toFixed(2)}</h4> {/* Mostrar el total formateado */}
-                <button className="btn btn-primary">Pagar</button> {/* Botón Pagar */}
-            </>
+                    {/* Mostrar el botón Pagar solo si el token es verdadero */}
+                    {token && <button className="btn btn-primary">Pagar</button>} {/* Botón Pagar */}
+                </>
             )}
-            
+
             <div className="container">
                 <div className="row">
                     {/* Mapeo de las pizzas en el carrito */}
@@ -48,11 +48,11 @@ const Cart = () => {
                     ))}
                 </div>
             </div>
-            
+
             <h3 className="highlighted-text">¡Escoge tu pizza preferida!</h3>
             <div className="row">
                 {/* Mapeo de la lista principal de pizzas */}
-                {listaPizzas.map((pizza, index) => (
+                {listaPizzas.map((pizza) => (
                     <div key={`principal-${pizza.id}`} className="col-md-4 mb-4">
                         <div className="card" style={{ width: "18rem" }}>
                             <img src={pizza.img} className="card-img-top" alt={pizza.name} />
@@ -82,6 +82,7 @@ const Cart = () => {
 };
 
 export default Cart;
+
 
 
 

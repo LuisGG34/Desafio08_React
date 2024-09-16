@@ -1,9 +1,12 @@
-import React, { useState }  from 'react'
+import React, { useState,useContext }  from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import fotoLuis from '../assets/img/fotoLuis.png'; // Importa la imagen correctamente
+import { UserContext } from '../context/UserContext';
 
 const Profile = ({onLogout }) => {
 
+
+  const {logout} = useContext(UserContext);
   const [editMode, setEditMode] = useState(false);
   const [profileData, setProfileData] = useState({
     nombre: 'Luis Andres Gutierrez Gonzalez',
@@ -24,12 +27,6 @@ const Profile = ({onLogout }) => {
       [name]: value,
     });
   };
-
-  const handleLogout = () => {
-    // Lógica para cerrar sesión
-    console.log('Cerrando sesión...');
-  };
-
 
   return (
     <div className="perfil-container">
@@ -75,7 +72,7 @@ const Profile = ({onLogout }) => {
       )}
 
       <div>
-        <button onClick={handleLogout}>Cerrar Sesión</button>
+        <button onClick={logout}>Cerrar Sesión</button>
         <button onClick={handleEdit}>{editMode ? 'Guardar' : 'Editar'}</button>
       </div>
     </div>

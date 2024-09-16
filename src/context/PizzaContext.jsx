@@ -32,6 +32,7 @@ export const PizzaProvider = ({children}) => {
         }
     };
 
+
     // Renderizamos el componente dependiendo del estado
     if (loading) {
         return <p>Cargando...</p>;
