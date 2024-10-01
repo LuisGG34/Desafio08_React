@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { CarritoContext } from './CarritoContext'; // Asegúrate de importar el contexto del carrito
 
 export const UserContext = createContext();
 
@@ -12,20 +11,20 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [profileData, setProfileData] = useState(null);
-    const [mensaje, setMensaje] = useState('');
+    const [carrito, setCarrito] = useState([]); // Estado del carrito
     const navigate = useNavigate();
-    const { carrito } = useContext(CarritoContext); // Obtener el carrito del contexto de Carrito
 
     const logout = () => {
         setToken('');
         setEmail('');
-        setPassword(''); // Limpiar la contraseña al salir
+        setPassword('');
+        setCarrito([]); // Limpiar el carrito al salir
         navigate('/login');
     };
 
     const handleSubmitLogin = async () => {
         setLoading(true);
-        setError(''); // Limpia el error al comenzar
+        setError('');
 
         const fields = { email, password };
 
@@ -44,7 +43,7 @@ export const UserProvider = ({ children }) => {
             if (data.token) {
                 setToken(data.token);
                 setEmail(data.email);
-                setPassword(''); // Limpiar la contraseña al iniciar sesión
+                setPassword('');
                 navigate('/profile');
             } else {
                 setError('Contraseña o correo incorrectos');
@@ -57,54 +56,88 @@ export const UserProvider = ({ children }) => {
     };
 
     const handleSubmitRegister = async () => {
-        setError(''); // Limpia el error al comenzar
+        // Resetea el estado de error y comienza la carga
+        setError('');
+        setLoading(true);
+    
+        // Verificar que email y password no estén vacíos
+        if (!email || !password) {
+            setError('El email y la contraseña son obligatorios.');
+            setLoading(false);
+            return;
+        }
+    
+        // Datos del usuario a enviar
+        const userData = { email, password };
+        console.log("Datos enviados:", userData); // Verificar datos enviados
+    
         try {
+            // Enviar solicitud al backend para registrar el usuario
             const response = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(userData),
             });
-
+    
+            // Si la respuesta no es exitosa, lanzar un error
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Error en el registro');
             }
-
+    
+            // Procesar la respuesta de la API
             const data = await response.json();
-            console.log(data); // Maneja la respuesta si el registro es exitoso
+            console.log('Registro exitoso:', data);
+    
+            // Limpia los campos de email y password tras el registro exitoso
+            setEmail('');
+            setPassword('');
+    
+            // Opcional: Redirigir a otra página tras el registro exitoso, por ejemplo, al perfil o login
+            navigate('/login');
         } catch (error) {
             console.error('Error en el registro:', error.message);
-            setError(error.message); // Manejo de errores durante el registro
+            setError(error.message);  // Mostrar mensaje de error en la UI
+        } finally {
+            // Finaliza el estado de carga
+            setLoading(false);
         }
     };
+    
 
-    const handleCheckout = async () => {
-        setMensaje('');
-        console.log(carrito)
-        if (!carrito || carrito.length === 0) {
-            setMensaje('El carrito está vacío.');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:5000/api/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ cart: carrito }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al procesar la compra.');
+    // Agregar un producto al carrito
+    const agregarAlCarrito = (producto) => {
+        setCarrito((prevCarrito) => {
+            const existe = prevCarrito.find(item => item.id === producto.id);
+            if (existe) {
+                return prevCarrito.map(item =>
+                    item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
+                );
             }
+            return [...prevCarrito, { ...producto, cantidad: 1 }];
+        });
+    };
 
-            const data = await response.json();
-            setMensaje('Compra realizada con éxito.');
-        } catch (error) {
-            setMensaje(`Error: ${error.message}`);
-        }
+    // Aumentar la cantidad de un producto
+    const aumentarCantidad = (id) => {
+        setCarrito(prevCarrito =>
+            prevCarrito.map(item =>
+                item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
+            )
+        );
+    };
+
+    // Disminuir la cantidad de un producto
+    const disminuirCantidad = (id) => {
+        setCarrito(prevCarrito => {
+            const producto = prevCarrito.find(item => item.id === id);
+            if (producto.cantidad === 1) {
+                return prevCarrito.filter(item => item.id !== id);
+            }
+            return prevCarrito.map(item =>
+                item.id === id ? { ...item, cantidad: item.cantidad - 1 } : item
+            );
+        });
     };
 
     useEffect(() => {
@@ -139,15 +172,17 @@ export const UserProvider = ({ children }) => {
         logout,
         handleSubmitLogin,
         handleSubmitRegister,
-        handleCheckout,
         loading,
         error,
-        mensaje,
         setEmail,
         setPassword,
         email,
         password,
         profileData,
+        carrito, // Añadir carrito al contexto
+        agregarAlCarrito,
+        aumentarCantidad,
+        disminuirCantidad,
     };
 
     return (
@@ -160,5 +195,3 @@ export const UserProvider = ({ children }) => {
 UserProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
-
-

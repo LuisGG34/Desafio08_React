@@ -5,8 +5,47 @@ import { CarritoContext } from '../context/CarritoContext';
 import { UserContext } from '../context/UserContext';
 
 const Cart = () => {
-    const { listaPizzas, totalCarrito,carrito, aumentarCantidad, disminuirCantidad, agregarAlCarrito } = useContext(CarritoContext);
-    const { token, handleCheckout, mensaje, setMensaje } = useContext(UserContext); // Usar handleCheckout y mensaje del UserContext
+    const { listaPizzas, totalCarrito, carrito, aumentarCantidad, disminuirCantidad, agregarAlCarrito } = useContext(CarritoContext);
+    const { token } = useContext(UserContext); // Obtener token del UserContext
+    const [mensaje, setMensaje] = useState(''); // Estado local para el mensaje
+
+    const handleCheckout = async () => {
+        setMensaje(''); // Resetea el mensaje al iniciar el checkout
+        if (!carrito || carrito.length === 0) {
+            setMensaje('El carrito está vacío.');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:5000/api/checkouts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,  // Token correcto
+                },
+                body: JSON.stringify({ cart: carrito }),  // Cuerpo con cart
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al procesar la compra.');
+            }
+
+            const data = await response.json();
+            setMensaje('Compra realizada con éxito.');
+            console.log(mensaje);
+            alert("compra exitosa");
+
+            // Limpia el carrito después de mostrar el mensaje
+            setTimeout(() => {
+                setMensaje(''); // Limpia el mensaje después de 6 segundos
+            }, 6000);
+        } catch (error) {
+            setMensaje(`Error: ${error.message}`);
+            setTimeout(() => {
+                setMensaje('');
+            }, 3000);
+        }
+    };
 
     return (
         <>
@@ -61,19 +100,11 @@ const Cart = () => {
                             <img src={pizza.img} className="card-img-top" alt={pizza.name} />
                             <div className="card-body text-center">
                                 <h5 className="card-title">{pizza.name}</h5>
-                                <h5 className="fs-6 fw-light">${pizza.price.toFixed(2)}</h5>
-                            </div>
-                            <div className="d-flex justify-content-around align-items-center mb-3">
-                                <button className="btn btn-dark" onClick={() => agregarAlCarrito(pizza.id)}>
+                                <h5 className="card-title">${pizza.price.toFixed(2)}</h5>
+                                <button className="btn btn-primary" onClick={() => agregarAlCarrito(pizza)}>
                                     <FontAwesomeIcon icon={faCartShopping} />
-                                    Añadir
                                 </button>
                             </div>
-                            {carrito.find(p => p.id === pizza.id) && (
-                                <div className="text-center mb-3">
-                                    <h6>Cantidad en el carrito: {carrito.find(p => p.id === pizza.id).cantidad}</h6>
-                                </div>
-                            )}
                         </div>
                     </div>
                 ))}
@@ -83,6 +114,8 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
 
 
 
